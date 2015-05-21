@@ -53,10 +53,10 @@ procedure Hex_Dump ( tLB : TListBox;
                      pDades : pointer ; iLlargada : integer ) ;
 var
   iCnt    : integer ;
-  szHex   : string ;
-  szAux   : string ;   // new byte is converted to 2 hex bytes
-  szAscii : string ;   // ascii translation, if possible
-  cNew    : AnsiChar ; // make sure we get only one byte
+  szHex   : AnsiString ;   // hex translation
+  szAux   : AnsiString ;   // new byte is converted to 2 hex bytes
+  szAscii : AnsiString ;   // ascii translation, if possible
+  cNew    : AnsiChar ;     // make sure we get only one byte
 
 begin
 
@@ -77,16 +77,16 @@ begin
 
     szHex := szHex + szAux ;
     szAux := '' ;
-    if ( ord ( cNew ) < $20 ) or ( ord ( cNew ) >= $7E ) then cNew := '.' ;
 
+    if ( ord ( cNew ) < $20 ) or ( ord ( cNew ) >= $7E ) then cNew := '.' ;
     szAscii := szAscii + cNew ;
 
-    if ( length( szHex ) > 46 ) then // 15 elements of 3 bytes + 1 element of 2 bytes
+    if ( length( szHex ) >= 47 ) then // 15 elements of 3 bytes + 1 element of 2 bytes
     begin
 
       repeat
-        szHex := szHex + ' ' ; // add a blank char
-      until ( length( szHex ) >= 55 ) ;
+        szHex := szHex + ' ' ;          // add a blank char
+      until ( length( szHex ) >= 55 ) ; //
 
       SAGdebugMsg ( tLB, '#### Hex Dump. Data {' + szHex + '[' + szAscii + ']' + '}.' ) ;
       szHex := '' ;
@@ -97,7 +97,21 @@ begin
     end ;
 
   end ; // while
-  
+
+  if ( length( szHex ) > 0 ) then begin  // there is a last line to trace
+
+    repeat
+      szHex := szHex + ' ' ; // add a blank char
+    until ( length( szHex ) >= 55 ) ;
+
+    repeat
+      szAscii := szAscii + ' ' ;        // add a blank char
+    until ( length( szAscii ) >= 16 ) ; // until usual width
+
+    SAGdebugMsg ( tLB, '#### Hex Dump. Data {' + szHex + '[' + szAscii + ']' + '}.' ) ;
+
+  end ; // last line, if any
+
 end ; // Hex_Dump()
 
 // ============================================================================

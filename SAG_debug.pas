@@ -1,7 +1,7 @@
 unit SAG_debug ;
 
 //
-// Per ajudar a la depuracio, escrivim missatges en una ListBox, even no pointer is provided.
+// Per ajudar a la depuracio, escrivim missatges en una ListBox, if a pointer is provided.
 //
 // Versions :
 //
@@ -10,6 +10,7 @@ unit SAG_debug ;
 //  1.3 - MaxNumItems = 20 per prevenir MemoryLeak
 //  1.4 - deixem 5 despres de esborrar
 //  1.5 - verify we have a tLB pointer
+//  1.6 - accept AnsiChar
 //
 
 //
@@ -27,16 +28,16 @@ uses
 const
 
   kszVersio = 'v 1.6' ;
-  Data_Darrera_Modificacio = '2012/10/03' ;  
+  Data_Darrera_Modificacio = '20150521' ;  
 
-procedure SAGdebugMsg ( tLB : TListBox; s: string ) ;
+procedure SAGdebugMsg ( tLB : TListBox; s: AnsiString ) ;
 procedure SAGdebugClearLB ( tLB : TListBox ) ;
 
 implementation
 
 // +++
 
-procedure SAGdebugMsg ( tLB : TListBox; s: string ) ;
+procedure SAGdebugMsg ( tLB : TListBox; s: AnsiString ) ;
 const
 	MaxNumofItems = 1400000000 ;     // amb 100.000 hi ha Page Faults & Memory Leak ; 40 is OK (?)
 	NumItemstoDelete = 35 ;
